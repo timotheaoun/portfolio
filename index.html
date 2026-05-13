@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timothé Aoun | développeur web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --bg2: #141414;
+      --surface: #1a1a1a;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0ede8;
+      --muted: #888;
+      --accent: #c8a96e;
+      --accent2: #e8d5b0;
+      --radius: 4px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(13,13,13,0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: padding .3s;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      letter-spacing: -.01em;
+      color: var(--text);
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 2.5rem; }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: .875rem;
+      font-weight: 500;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10rem 4rem 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: 
+	  radial-gradient(circle, rgba(200,169,110,.12) 0%, transparent 70%);
+	  
+      top: 50%; left: 55%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .tag::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-content { max-width: 780px; position: relative; z-index: 1; }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .honest-badge {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: .75rem;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(200,169,110,.25);
+      border-radius: var(--radius);
+      background: rgba(200,169,110,.04);
+      margin-bottom: 2.5rem;
+      max-width: 540px;
+    }
+
+    .honest-badge .badge-icon { font-size: 1.1rem; margin-top: .05rem; flex-shrink: 0; }
+
+    .honest-badge p {
+      font-size: .875rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .honest-badge strong { color: var(--accent2); font-weight: 500; }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      font-size: .875rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      padding: .85rem 2rem;
+      border-radius: var(--radius);
+      transition: all .2s;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #0d0d0d;
+    }
+
+    .btn.primary:hover { background: var(--accent2); transform: translateY(-1px); }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn.secondary:hover { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.04); }
+
+    .btn.large { padding: 1rem 2.5rem; font-size: 1rem; }
+
+    .section {
+      padding: 8rem 4rem;
+      position: relative;
+    }
+
+    .section.dark { background: var(--bg2); }
+
+    .section-header {
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: block;
+      width: 20px; height: 1px;
+      background: var(--accent);
+    }
+
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.2;
+      letter-spacing: -.01em;
+      max-width: 560px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      max-width: 1100px;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      font-size: 1.0625rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-stack h4 {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .stack-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      list-style: none;
+    }
+
+    .stack-list li {
+      padding: .4rem .85rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: .8125rem;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .card:hover {
+      border-color: rgba(200,169,110,.3);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      margin-bottom: .75rem;
+      color: var(--text);
+    }
+
+    .card p { color: var(--muted); font-size: .9375rem; line-height: 1.7; }
+
+    .projects-intro {
+      max-width: 560px;
+      color: var(--muted);
+      margin-top: .75rem;
+      font-size: .9375rem;
+      line-height: 1.7;
+    }
+
+    .projects-intro strong { color: var(--text); }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin-top: 3rem;
+    }
+
+    .project {
+      aspect-ratio: 4/3;
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: default;
+      transition: border-color .2s;
+    }
+
+    .project:hover { border-color: rgba(200,169,110,.3); }
+
+    .project:nth-child(1) .project-bg {
+      background: linear-gradient(135deg, #1a1209 0%, #2d1f0a 50%, #1a1209 100%);
+    }
+    .project:nth-child(2) .project-bg {
+      background: linear-gradient(135deg, #0a1219 0%, #0d1f2d 50%, #0a1219 100%);
+    }
+    .project:nth-child(3) .project-bg {
+      background: linear-gradient(135deg, #111118 0%, #1a1a2e 50%, #111118 100%);
+    }
+
+    .project-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .project-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: .15;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 39px, rgba(255,255,255,.1) 40px
+      ), repeating-linear-gradient(
+        90deg, transparent, transparent 39px, rgba(255,255,255,.1) 40px
+      );
+    }
+
+    .project-demo-tag {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      padding: .25rem .6rem;
+      background: rgba(200,169,110,.15);
+      border: 1px solid rgba(200,169,110,.3);
+      border-radius: 2px;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .project-overlay {
+      position: absolute;
+      inset: 0;
+	  cursor: pointer;
+      background: linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 50%);
+    }
+
+    .project-content {
+	  z-index: 2;
+      position: absolute;
+      bottom: 1.5rem; left: 1.5rem;
+    }
+
+    .project-content p {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .3rem;
+    }
+
+    .project-content h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--text);
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+    }
+
+    .pricing-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      background: var(--surface);
+    }
+
+    .pricing-card.highlight {
+      border-color: rgba(200,169,110,.4);
+      background: rgba(200,169,110,.04);
+    }
+
+    .pricing-card .price {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      color: var(--text);
+      margin: 1rem 0 .25rem;
+    }
+
+    .pricing-card .price span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .pricing-card h4 {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .pricing-card p {
+      color: var(--muted);
+      font-size: .875rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .pricing-card ul li {
+      font-size: .875rem;
+      color: var(--muted);
+      padding-left: 1.1rem;
+      position: relative;
+    }
+
+    .pricing-card ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: .75rem;
+    }
+
+    .contact { background: var(--bg); }
+
+    .contact-box {
+      max-width: 620px;
+    }
+
+    .contact-box h2 { margin-bottom: 1rem; }
+
+    .contact-text {
+      color: var(--muted);
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      margin-bottom: 2rem;
+    }
+
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer p { color: var(--muted); font-size: .8125rem; }
+
+    footer a { color: var(--muted); text-decoration: none; font-size: .8125rem; }
+    footer a:hover { color: var(--text); }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .hero, .section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero { padding-top: 8rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; gap: .5rem; text-align: center; }
+    }
+	
+	.project img {
+  position: absolute;
+  filter: blur(80px);
+  inset: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+	.project img:hover {
+  position: absolute;
+  filter: blur(0px);
+  opacity: 0.2;
+}
+.project p,
+.project h3 {
+  transition: all 0.4s ease;
+    z-index: 3;
+}
+.project:hover p {
+  opacity: 0.7;
+  transform: translateY(-4px);
+}
+
+.project:hover h3 {
+  transform: translateY(-6px);
+   background: linear-gradient(to right, #00cc66, #00aaff); 
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: black;
+}
+  </style>
+</head>
+<body>
+
+<div class="noise"></div>
+<nav>
+  <div class="logo">Timothé<span>.</span>Aoun</div>
+  <div class="nav-links">
+    <a href="#about">À propos</a>
+    <a href="#services">Services</a>
+    <a href="#projects">Démos</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <p class="tag">Développeur web freelance, disponible dès maintenant</p>
+    <h1>
+      Je crée des sites web <em>soignés</em> pour ceux qui en ont besoin
+    </h1>
+    <p class="subtitle">
+      Particuliers, étudiants, restaurants, artisans... 
+	  peu importe le profil. Je me lance en freelance et ce qui compte pour moi est de trouver mes premiers clients
+    </p>
+
+    <div class="hero-buttons">
+      <a class="btn primary" href="#contact">Me contacter</a>
+      <a class="btn secondary" href="#projects">Voir les démos</a>
+    </div>
+  </div>
+</header>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="section-header reveal">
+    <p class="section-tag">À propos</p>
+    <h2>Qui je suis et ce que je propose.</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        Je m'appelle <strong>Timothé Aoun</strong>, développeur web et étudiant.
+        Après avoir appris en autodidacte et affiné mes compétences en HTML, je me lance
+        aujourd'hui en freelance pour proposer des sites web modernes à prix honnêtes.
+      </p>
+      <p>
+        Mon objectif est de coder des sites clairs et soignés,
+        pour <strong>mettre en avant une activité</strong> (professionnelle ou personnelle) que ce soit
+        pour un artisan, un restaurant, un coach, une boutique locale, un photographe, un étudiant...
+      </p>
+    </div>
+    <div class="about-stack reveal">
+      <h2>Pourquoi un site web ?</h2>
+
+<ul class="features">
+<br>
+  <li>Être visible en ligne</li>
+  <li>Inspirer confiance</li>
+  <li>Présenter vos services</li>
+  <li>Faciliter les prises de contact</li>
+  <li>Attirer de nouveaux clients</li>
+</ul>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section dark" id="services">
+  <div class="section-header reveal">
+    <p class="section-tag">Services</p>
+    <h2>Ce que je peux faire pour vous.</h2>
+  </div>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="card-icon">✦</div>
+      <h3>Site vitrine</h3>
+      <p>
+        Un site clair et élégant pour présenter votre activité, vos services et
+        vous démarquer en ligne. Design sur mesure, adapté à votre identité.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">◈</div>
+      <h3>Restaurants & commerces</h3>
+      <p>
+        Menu, horaires, carte interactive, formulaire de contact.
+        Tout ce qu'il faut pour que vos clients trouvent l'essentiel en quelques secondes.
+      </p>
+    </div>
+    <div class="card reveal">
+      <div class="card-icon">⬡</div>
+      <h3>Portfolios & CV</h3>
+      <p>
+         Mettez en évidence vos projets et vos compétences
+        avec un site visuel et professionnel.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="section-header reveal">
+ 
+    <p class="section-tag">Démos</p>
+    <h2>Des pages web réalisées</h2>
+    <p class="projects-intro reveal">
+      Ces projets sont des maquettes fictives ou des pages web codées, pour vous montrer à quoi votre site peut ressembler
+    </p>
+  </div>
+<div class="projects">
+
+  <!-- 1 -->
+  <a href="https://timotheaoun.github.io/" class="project img reveal">
+    <img src="TWsite.png" alt="">
+    <div class="project-bg"></div>
+    <span class="project-demo-tag">site statique</span>
+    <div class="project-pattern"></div>
+    <div class="project-overlay"></div>
+
+    <div class="project-content">
+      <p>Portfolio</p>
+      <h3>Parcours de Timothé</h3>
+    </div>
+  </a>
+
+  <!-- 2 -->
+  <a href="https://timotheaoun.github.io/maths/ProjetsMatheux.html" class="project img reveal">
+    <img src="Projets.png" alt="">
+    <div class="project-bg"></div>
+    <span class="project-demo-tag">site statique</span>
+    <div class="project-pattern"></div>
+    <div class="project-overlay"></div>
+
+    <div class="project-content">
+      <p>Expositions de projets</p>
+      <h3>Projets numériques</h3>
+    </div>
+  </a>
+
+  <!-- 3 -->
+  <a href="https://timotheaoun.github.io/Programmer/index.html" class="project img reveal">
+    <img src="Inf.png" alt="">
+    <div class="project-bg"></div>
+    <span class="project-demo-tag">site statique</span>
+    <div class="project-pattern"></div>
+    <div class="project-overlay"></div>
+
+    <div class="project-content">
+      <p>Studio créatif</p>
+      <h3>Outils et applications web</h3>
+    </div>
+  </a>
+
+</div>
+  </div>
+</section>
+<section class="section contact" id="contact">
+  <div class="contact-box reveal">
+    <p class="section-tag">Contact</p>
+    <h2>Vous avez besoin d'un site web? Écrivez-moi.</h2>
+    <p class="contact-text">
+      Je réponds à tous les messages, même si votre projet est encore vague ou que vous
+      avez des questions sur la démarche. Pas de pression 😉
+    </p>
+    <a class="btn primary large" href="mailto:aountimothe.network@gmail.com">
+      aountimothe.network@gmail.com
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Timothé Aoun — Développeur Web Freelance</p>
+  <a href="mailto:aountimothe.network@gmail.com">aountimothe.network@gmail.com</a>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.padding = window.scrollY > 60 ? '1rem 4rem' : '1.4rem 4rem';
+  });
+</script>
+</body>
+</html>
