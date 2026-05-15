@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://timotheaoun.vercel.app/sitemap.xml
